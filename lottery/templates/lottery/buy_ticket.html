@@ -1,0 +1,28 @@
+<!-- 로또 구매 페이지 입니다. -->
+
+{% extends 'lottery/base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>로또 구매</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>구매 방식</label>
+        <select class="form-select mb-3" name="type" id="tp" onchange="toggleInput()">
+            <option value="auto">자동</option>
+            <option value="manual">수동</option>
+        </select>
+
+        <div id="manual-input" style="display:none;">
+            <input class="form-control mb-3" name="numbers" placeholder="1,5,10,23,33,44">
+        </div>
+
+        <button class="btn btn-primary">구매하기</button>
+    </form>
+</div>
+<script>
+function toggleInput(){
+    document.getElementById("manual-input").style.display =
+        document.getElementById("tp").value === "manual" ? "block" : "none";
+}
+</script>
+{% endblock %}

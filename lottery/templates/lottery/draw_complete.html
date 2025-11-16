@@ -1,0 +1,11 @@
+{% comment %} 추첨 완료 페이지 입니다. {% endcomment %}
+
+{% extends 'lottery/base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>🎉 {{ draw.round }}회차 추첨 완료</h2>
+    <p class="fs-5">당첨 번호: <span class="fw-bold">{{ draw.numbers }}</span></p>
+    <p>보너스 번호: {{ draw.bonus }}</p>
+    <a href="{% url 'admin:index' %}" class="btn btn-secondary">관리자 홈</a>
+</div>
+{% endblock %}

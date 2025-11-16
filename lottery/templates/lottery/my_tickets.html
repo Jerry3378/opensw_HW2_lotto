@@ -1,0 +1,37 @@
+{% extends 'lottery/base.html' %}
+{% comment %} 내 티켓 목록 페이지 입니다. {% endcomment %}
+{% block content %}
+<div class="container mt-4">
+    <h2>🧾 내 로또 티켓</h2>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>회차</th>
+                <th>번호</th>
+                <th>구매일</th>
+                <th>자동</th>
+                <th>결과</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tickets %}
+            <tr>
+                <td>{{ t.round|default:"미추첨" }}</td>
+                <td>{{ t.numbers }}</td>
+                <td>{{ t.purchase_date|date:"Y-m-d H:i" }}</td>
+                <td>{{ t.is_auto }}</td>
+                <td>
+                {% if t.winningresult %}
+                    <span class="fw-bold text-success">{{ t.winningresult.rank }}등 / {{ t.winningresult.prize }}원</span>
+                {% else %}
+                    -
+                {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center">구매한 티켓이 없습니다.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
