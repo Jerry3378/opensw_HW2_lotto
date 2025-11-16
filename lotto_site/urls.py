@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from lottery.views import home
 
 urlpatterns = [
+    path('', home, name='home'),   # ← 루트 URL 대응
     path('admin/', admin.site.urls),
     path('lottery/', include('lottery.urls')),  # lottery 앱의 URL을 포함하여 해당 경로로 요칭이 들어오면 lottery.urls로 라우팅합니다.
 ]

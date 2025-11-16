@@ -2,8 +2,9 @@
 # Django models for the lottery application
 
 from django.db import models
-from jdango.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.utils import timezone
+import uuid
 
 class Draw(models.Model):
     # 관리자가 생성하는 복권 추첨 이벤트 모델
@@ -17,14 +18,15 @@ class Draw(models.Model):
 
 class Ticket(models.Model):
     # 사용자가 구매한 복권 티켓 모델
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # 티켓 소유자
-    round = models = models.IntegerField(null = True, blank=True) # 추첨 전이면 Null, 추첨 후에는 회차 정보
+    round = models.IntegerField(null = True, blank=True) # 추첨 전이면 Null, 추첨 후에는 회차 정보
     numbers = models.CharField(max_length=30)  # 구매한 번호를 쉼표로 구분된 문자열로 저장(예: 3,11,15,22,28,35)
     purchase_date = models.DateTimeField(default=timezone.now)  # 구매 날짜 및 시간
     is_auto = models.BooleanField(default=False)  # 자동 구매 여부
     
+    access_code = models.UUIDField(default=uuid.uuid4, editable=False)  # 비회원 확인용
+    
     def __str__(self):
-        return f"{self.user.username} - {self.numbers}"
+        return f"{self.id}번 티켓: {self.numbers}"
 
 
 class WinningResult(models.Model):
@@ -35,4 +37,4 @@ class WinningResult(models.Model):
     matched_numbers = models.IntegerField(default=0)  # 맞춘 번호 개수, 상금액
     
     def __str__(self):
-        return f"{self.ticket.user.username} - {self.rank}등" + f" {self.matched_numbers} 개 맞춤"
+        return f"티켓 {self.ticket.id}번 - {self.rank}등" + f" ({self.matched_numbers}개 맞춤)"
