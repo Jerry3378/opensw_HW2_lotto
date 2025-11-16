@@ -19,4 +19,5 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('lottery/', include('lottery.urls')),  # lottery 앱의 URL을 포함하여 해당 경로로 요칭이 들어오면 lottery.urls로 라우팅합니다.
 ]

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lottery',  # 복권 애플리케이션 추가 (앱을 만들었어도 settings.py → INSTALLED_APPS에 등록 안 하면 동작 안 함)
 ]
 
 MIDDLEWARE = [
