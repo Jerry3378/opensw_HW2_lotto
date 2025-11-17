@@ -61,30 +61,26 @@ def draw_lottery(request):
     draw = Draw.objects.create(
         round=last_round + 1,
         numbers=",".join(map(str, nums)),
-        bonus=bonus
+        bonus_number=bonus,
     )
 
     # 당첨 판정
     # 모든 사용자 티켓에 대해 당첨 판별 수행
     tickets = Ticket.objects.filter(round__isnull=True)
+    
     for t in tickets:
         t.round = draw.round
         t.save()
 
-        matched = len(set(map(int, t.numbers.split(","))) & set(map(int, draw.numbers.split(","))))
+        user_numbers = set(map(int, t.numbers.split(",")))
+        win_numbers = set(nums)
+        matched = len(user_numbers & win_numbers)
 
-        if matched == 6:
-            rank, prize = 1, 2000000000
-        elif matched == 5:
-            rank, prize = 2, 50000000
-        elif matched == 4:
-            rank, prize = 3, 1500000
-        elif matched == 3:
-            rank, prize = 4, 50000
-        else:
-            continue
-
-        WinningResult.objects.create(ticket=t, rank=rank, prize=prize)
+        WinningResult.objects.create(
+            ticket=t,
+            rank=rank,
+            matched_numbers=matched,
+        )
 
     return render(request, "lottery/draw_complete.html", {"draw": draw})
 
@@ -94,7 +90,7 @@ def home(request):
 
 def my_tickets(request):
     ticket_ids = request.session.get("tickets", [])
-    tickets = Ticket.objects.filter(id__in=ticket_ids)
+    tickets = Ticket.objects.filter(id__in=ticket_ids).select_related("winningresult")
 
     return render(request, "lottery/my_tickets.html", {
         "tickets": tickets,

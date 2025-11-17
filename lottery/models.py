@@ -34,7 +34,8 @@ class WinningResult(models.Model):
     """사용자별 당첨 결과 저장"""
     ticket = models.OneToOneField(Ticket, on_delete=models.CASCADE)  # 해당 티켓
     rank = models.IntegerField(null=True, blank=True)  # 당첨 등수 (1~5등, 미당첨은 Null)
-    matched_numbers = models.IntegerField(default=0)  # 맞춘 번호 개수, 상금액
+    matched_numbers = models.IntegerField(default=0)  # 맞춘 번호 개수
     
     def __str__(self):
         return f"티켓 {self.ticket.id}번 - {self.rank}등" + f" ({self.matched_numbers}개 맞춤)"
+        
